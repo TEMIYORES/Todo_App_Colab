@@ -1,14 +1,28 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import mongoose from "mongoose";
+import userRoute from "./routes/userRoute.js";
+import todoRoute from "./routes/TodoRoute.js";
+import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
+import connDB from "./config/connDB.js";
 dotenv.config();
-const app = express();
+connDB();
 
+const app = express();
+app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const port = process.env.PORT || 8080;
 
-app.use("/", (req, res) => {
-  res.send("Qayyum and Ayoola Colab Todo App!");
-});
+app.use("/api/users", userRoute);
+app.use("/api/todos", todoRoute);
 
-app.listen(port, () => {
-  console.log("Server is running on port", port);
+app.use(notFound);
+app.use(errorHandler);
+
+mongoose.connection.once("open", () => {
+  app.listen(port, () => {
+    console.log("Server is running on port", port);
+  });
 });
