@@ -30,6 +30,7 @@ const createTodos = expressAsyncHandler(async (req, res) => {
       id: new_todo._id,
       title: new_todo.title,
       description: new_todo.description,
+      status: new_todo.status,
     });
   }
 });
