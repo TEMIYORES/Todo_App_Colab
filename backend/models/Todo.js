@@ -10,9 +10,8 @@ const TodoSchema = new mongoose.Schema({
     required: true,
   },
   status: {
-    type: String,
-    enum: ["Not Started", "In Progress", "Completed"],
-    default: "Not Started",
+    type: Boolean,
+    default: false,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,

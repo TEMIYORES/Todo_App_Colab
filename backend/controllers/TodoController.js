@@ -54,12 +54,7 @@ const updateTodo = expressAsyncHandler(async (req, res) => {
   if (req.body?.description) todo.description = description;
   if (req.body?.isFavourite) todo.isFavourite = isFavourite;
   if (req.body?.status) {
-    const statusValues = {
-      new: "Not Started",
-      progress: "In Progress",
-      completed: "Completed",
-    };
-    todo.status = statusValues[status];
+    todo.status = status;
   }
   const updatedTodo = await todo.save();
   return res.status(200).json(updatedTodo);
@@ -73,13 +68,19 @@ const getUserFavouriteTodos = expressAsyncHandler(async (req, res) => {
   if (!favTodos) return res.status(200).json({ message: "No Favourite Todos" });
   return res.status(200).json({ favTodos });
 });
-const deleteTodo = expressAsyncHandler(async(req, res)=>{
-    const { id } = req?.params;
+const deleteTodo = expressAsyncHandler(async (req, res) => {
+  const { id } = req?.params;
   if (!id)
     return res.status(200).json({ message: "Todo ID is required to delete!" });
   const todo = await TodoDB.findByIdAndRemove(id);
   if (!todo) return res.status(404).json({ message: "Todo Not Found!" });
   return res.status(200).json({ message: "Todo successfully deleted" });
-})
+});
 
-export { getUserTodos, createTodos, updateTodo, getUserFavouriteTodos, deleteTodo };
+export {
+  getUserTodos,
+  createTodos,
+  updateTodo,
+  getUserFavouriteTodos,
+  deleteTodo,
+};
